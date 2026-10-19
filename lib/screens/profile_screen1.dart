@@ -19,7 +19,6 @@ class _ProfileScreen1State extends State<ProfileScreen1> {
 
   int _tab = 0;
 
-  // TODO: replace with real actions once those screens exist.
   void _soon() => ScaffoldMessenger.of(context)
       .showSnackBar(const SnackBar(content: Text('Coming soon')));
 
