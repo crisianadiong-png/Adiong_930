@@ -19,6 +19,7 @@ class _ProfileScreen1State extends State<ProfileScreen1> {
 
   int _tab = 0;
 
+  // TODO: replace with real actions once those screens exist.
   void _soon() => ScaffoldMessenger.of(context)
       .showSnackBar(const SnackBar(content: Text('Coming soon')));
 
@@ -29,12 +30,13 @@ class _ProfileScreen1State extends State<ProfileScreen1> {
       body: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
-          padding: EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.only(bottom: 16),
           child: Column(children: [
             _header(),
-            Text('John Doe',style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-            Text('3 posts', style: TextStyle(color: Colors.black54)),
-            Text.rich(TextSpan(children: [
+            const Text('John Doe',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+            const Text('3 posts', style: TextStyle(color: Colors.black54)),
+            const Text.rich(TextSpan(children: [
               WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
                   child: Icon(Icons.location_on, size: 16)),
@@ -61,32 +63,30 @@ class _ProfileScreen1State extends State<ProfileScreen1> {
                       onPressed: _soon,
                       style: TextButton.styleFrom(
                         foregroundColor: _accent,
+                        overlayColor: Colors.transparent,
+                        splashFactory: NoSplash.splashFactory,
                         padding: EdgeInsets.zero,
                         minimumSize: const Size(0, 32),
                         alignment: Alignment.centerLeft,
                       ),
-                      child: Text('Learn more'),
+                      child: const Text('Learn more'),
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Wrap(spacing: 8, children: [
+                  Row(children: [
                     for (var i = 0; i < _tabs.length; i++)
-                      ChoiceChip(
-                        label: Text(_tabs[i]),
-                        selected: _tab == i,
-                        showCheckmark: false,
-                        side: BorderSide.none,
-                        backgroundColor: Colors.transparent,
-                        selectedColor: Colors.transparent,
-                        elevation: 0,
-                        pressElevation: 0,
-                        shape: const StadiumBorder(side: BorderSide.none),
-                        labelStyle: TextStyle(
-                          color: _tab == i ? _accent : Colors.black,
-                          fontWeight:
-                              _tab == i ? FontWeight.bold : FontWeight.normal,
+                      TextButton(
+                        onPressed: () => setState(() => _tab = i),
+                        style: TextButton.styleFrom(
+                          foregroundColor: _tab == i ? _accent : Colors.black,
+                          overlayColor: Colors.transparent,
+                          splashFactory: NoSplash.splashFactory,
+                          textStyle: TextStyle(
+                            fontWeight:
+                                _tab == i ? FontWeight.bold : FontWeight.normal,
+                          ),
                         ),
-                        onSelected: (_) => setState(() => _tab = i),
+                        child: Text(_tabs[i]),
                       ),
                   ]),
                   ListTile(
@@ -135,11 +135,11 @@ class _ProfileScreen1State extends State<ProfileScreen1> {
           left: 8,
           right: 8,
           child: Row(children: [
-            _round(Icons.menu, 'Menu'),
+            _round(Icons.menu, 'Menu', flat: true),
             const Spacer(),
-            _round(Icons.edit_outlined, 'Edit'),
-            _round(Icons.search, 'Search'),
-            _round(Icons.more_horiz, 'More options'),
+            _round(Icons.edit_outlined, 'Edit', flat: true),
+            _round(Icons.search, 'Search', flat: true),
+            _round(Icons.more_horiz, 'More options', flat: true),
           ]),
         ),
         Positioned(
@@ -176,18 +176,29 @@ class _ProfileScreen1State extends State<ProfileScreen1> {
     );
   }
 
-  Widget _round(IconData icon, String tip, {bool light = false}) {
+  Widget _round(IconData icon, String tip,
+      {bool light = false, bool flat = false}) {
     return Padding(
       padding: const EdgeInsets.all(4),
-      child: IconButton.filled(
-        onPressed: _soon,
-        tooltip: tip,
-        icon: Icon(icon, size: 20),
-        style: IconButton.styleFrom(
-          backgroundColor: light ? Colors.white : Colors.black54,
-          foregroundColor: light ? Colors.black : Colors.white,
-        ),
-      ),
+      child: flat
+          ? IconButton(
+              onPressed: _soon,
+              tooltip: tip,
+              icon: Icon(icon, size: 24),
+              style: IconButton.styleFrom(
+                foregroundColor: Colors.white,
+                overlayColor: Colors.transparent,
+              ),
+            )
+          : IconButton.filled(
+              onPressed: _soon,
+              tooltip: tip,
+              icon: Icon(icon, size: 20),
+              style: IconButton.styleFrom(
+                backgroundColor: light ? Colors.white : Colors.black54,
+                foregroundColor: light ? Colors.black : Colors.white,
+              ),
+            ),
     );
   }
 
