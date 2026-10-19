@@ -30,6 +30,7 @@ class _ProfileScreen1State extends State<ProfileScreen1> {
       body: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.only(bottom: 16),
           child: Column(children: [
             _header(),
@@ -47,7 +48,7 @@ class _ProfileScreen1State extends State<ProfileScreen1> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     _button('Add to story', Icons.add_circle_outline, _accent,
                         Colors.white),
                     const SizedBox(width: 8),
@@ -203,7 +204,8 @@ class _ProfileScreen1State extends State<ProfileScreen1> {
   }
 
   Widget _button(String label, IconData icon, Color bg, Color fg) {
-    return Expanded(
+    return SizedBox(
+      width: 160,
       child: FilledButton.icon(
         onPressed: _soon,
         icon: Icon(icon, size: 18),
